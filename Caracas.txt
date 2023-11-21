@@ -1,0 +1,7 @@
+Sucy's Cookies, Kagari Sushi
+Kagari Sushi, Arepas Amanda
+Arepas Amanda, Sucy's Cookies
+MacDonas, Farmanada
+Farmanada, MacDonas
+Sucy's Cookies, Farmanada
+Kagari Sushi, MacDonas

@@ -5,10 +5,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
-
 class NextToYou{
 
-     HashMap<String, Integer> vertices;
+    private HashMap<String, Integer> vertices;
     private ArrayList<ArrayList<Integer>> edges;
 
     public NextToYou(Set<String> vertexSet, ArrayList<Pair<String>> edges){
@@ -40,28 +39,27 @@ class NextToYou{
         }
     }
 
-    public boolean[][] alcance(){
+    public boolean[][] reach(){
         boolean[][] M = new boolean[vertices.size()][vertices.size()];
 
         for (int i = 0; i < vertices.size(); i++) {
-            alcanzable(i, i, M);
+            reachable(i, i, M);
         }
-
 
         return M;
     }
 
-    public void alcanzable(int v, int w, boolean[][] M){
+    public void reachable(int v, int w, boolean[][] M){
         M[v][w] = true;
         for (Integer z : edges.get(w)) {
             if (!M[v][z]){
-                alcanzable(v, z, M);
+                reachable(v, z, M);
             }
         }
     }
 
     public int[] stronglyConnectedComponents(){
-        boolean[][] M = alcance();
+        boolean[][] M = reach();
         int[] C = new int[vertices.size()];
         for (int i = 0; i < C.length; i++) {
             C[i] = -1;
@@ -107,29 +105,28 @@ class NextToYou{
 
             int[] C = graph.stronglyConnectedComponents();
 
-            HashMap<Integer, Integer> localidades = new HashMap<Integer, Integer>();
-
-            for (int index = 0; index < C.length; index++) {
-                if (!localidades.containsKey(C[index])) {
-                    localidades.put(C[index], 1);
-                } else {
-                    localidades.replace(C[index], localidades.get(C[index]) + 1);
-                }
+            int[] countLocalityShops = new int[C.length];
+            for (int i = 0; i < C.length; i++) {
+                countLocalityShops[C[i]] += 1;
             }
 
-            int numRepartidores = 0;
-            for (Integer l : localidades.keySet()) {
-                int numComercios = localidades.get(l);
-                if (numComercios <= 2){
-                    numRepartidores += 10;
-                } else if (numComercios <= 5){
-                    numRepartidores += 20;
-                } else {
-                    numRepartidores += 30;
+            int numDeliveryMan = 0;
+            for (int i = 0; i < countLocalityShops.length; i++) {
+                int numShops = countLocalityShops[i];
+                if (numShops == 0){
+                    continue;
                 }
-            }
 
-            System.err.println(numRepartidores);
+                if (numShops <= 2){
+                    numDeliveryMan += 10;
+                } else if (numShops <= 5){
+                    numDeliveryMan += 20;
+                } else {
+                    numDeliveryMan += 30;
+                }
+
+            }
+            System.err.println(numDeliveryMan);
             
         } catch (FileNotFoundException e) {
             System.err.println("Ha ocurrido un error leyendo el archivo Caracas.txt");
